@@ -1,0 +1,49 @@
+#-*-Makefile-*-
+
+##########################################################################
+# package:   makefiles                                                   #
+# version:   2.0.1, 21-Jan-2000                                          #
+# file:      makeisdc1(.in)                                              #
+# author:    Jerzy.Borkowski@obs.unige.ch                                #
+# copyright: ISDC, chemin d'Ecogia 16, 1290 Versoix, Switzerland         #
+##########################################################################
+
+# this file is included from Makefile(.in)
+
+COMPONENT_NAME                  = faddrow
+COMPONENT_VERSION               = 1.0
+
+TAR_FILE_NAME                   = ${COMPONENT_NAME}-${COMPONENT_VERSION}
+
+EXTERNAL_PACKAGES	= 
+
+SUBDIRS			= 
+
+# ========================= C EXECUTABLE TARGET  =========================
+# PLEASE CUT&PASTE INTO makeisdc1.in FROM HERE UP TO END OF TARGET DEFN
+#
+
+C_EXEC_1_NAME		= ${COMPONENT_NAME}
+C_EXEC_1_SOURCES	= ${COMPONENT_NAME}.c ${COMPONENT_NAME}_main.c
+C_EXEC_1_OBJECTS	= ${COMPONENT_NAME}.o ${COMPONENT_NAME}_main.o
+C_EXEC_1_LIBRARIES	= -ldal3gen -lcommon -lpil -lril -ldal -lcfitsio ${LAST_LIBS}			
+
+ALL_C_CFLAGS += -DCOMPONENT_VERSION=\"${COMPONENT_VERSION}\"
+ALL_C_CFLAGS += -DCOMPONENT_NAME=\"${COMPONENT_NAME}\"
+
+${C_EXEC_1_NAME}:	${C_EXEC_1_OBJECTS} ${COMPONENT_NAME}.h
+			${CC}  ${ALL_C_CFLAGS} -o ${C_EXEC_1_NAME} ${C_EXEC_1_OBJECTS} ${ALL_C_LDFLAGS} ${C_EXEC_1_LIBRARIES}
+
+CLEAN_TARGETS		+= ${C_EXEC_1_NAME}
+ALL_TARGETS		+= ${C_EXEC_1_NAME}
+TO_INSTALL_BIN		+= ${C_EXEC_1_NAME}
+TO_INSTALL_HELP		+= ${COMPONENT_NAME}.txt
+TO_INSTALL_LIB		+= 
+TO_INSTALL_PAR		+= ${COMPONENT_NAME}.par
+TO_INSTALL_TEMPLATES	+= 
+TO_INSTALL_EXTRA_GLOBAL	+=
+TO_INSTALL_EXTRA_LOCAL	+=
+# ======================== END OF C EXECUTABLE TARGET  =================
+
+testcommands::	 ${C_EXEC_1_NAME}
+	(cd unit_test; unit_test.csh)

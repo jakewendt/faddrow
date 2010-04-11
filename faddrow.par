@@ -1,0 +1,2 @@
+inDol,    s, ql,   "", , , "DOL"
+numrows,  i,  h,    1, , , "Number of rows to add to end of table"
